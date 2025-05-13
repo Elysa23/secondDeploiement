@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CoursePageController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\StudentDashboardController;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -139,3 +143,21 @@ Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submitAnswers'])->
 // 09/05 Affichage quizz côté admin et formateur
 Route::get('quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show');
 
+// 12/05 Affichage dashboard admin
+
+
+Route::get('/admin/courses-stats', [AdminDashboardController::class, 'coursesStats'])->name('admin.courses.stats');
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
+
+// 13/05 dashboard quizz
+
+Route::get('/admin/quiz-stats', [AdminDashboardController::class, 'quizStats'])->name('admin.quiz.stats');
+Route::get('/student/quiz-stats', [StudentDashboardController::class, 'quizStats'])
+    ->middleware(['auth', 'role:apprenant']) // si tu as un middleware de rôle
+    ->name('student.quiz.stats');
+
+// 13/05 dashboard apprenant
+
+Route::get('/student/dashboard', [StudentDashboardController::class, 'dashboard'])
+    ->middleware(['auth', 'role:apprenant'])
+    ->name('student.dashboard');

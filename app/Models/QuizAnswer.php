@@ -6,17 +6,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuizAnswer extends Model
 {
-    protected $fillable = ['quiz_id', 'user_id', 'answers', 'time_spent'];
-
-    protected $casts = [
-        'answers' => 'array',
+    // Champs autorisés à l'écriture en masse
+    protected $fillable = [
+        'quiz_id',
+        'user_id',
+        'answers',
+        'time_spent',
+        'score', // Ajout du champ score
     ];
 
+    // Casts automatiques pour les attributs
+    protected $casts = [
+        'answers' => 'array',
+        'score' => 'float',
+        'time_spent' => 'integer',
+    ];
+
+    /**
+     * Relation : cette réponse appartient à un quiz
+     */
     public function quiz()
     {
         return $this->belongsTo(Quiz::class);
     }
 
+    /**
+     * Relation : cette réponse appartient à un utilisateur (apprenant)
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -10,8 +10,10 @@ class CourseProgress extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'course_id', 'course_page_id', 'status'
+        'user_id', 'course_id', 'course_page_id', 'started_at', 'status'
     ];
+
+    public $timestamps = true;
 
     // Relation : progression liée à un utilisateur
     public function user()

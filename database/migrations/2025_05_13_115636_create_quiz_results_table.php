@@ -11,22 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course_progress', function (Blueprint $table) {
+        Schema::create('quiz_results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('course_id')->constrained()->onDelete('cascade');
-            $table->foreignId('course_page_id')->nullable()->constrained('course_pages')->onDelete('cascade');
-            $table->enum('status', ['in_progress', 'completed'])->default('in_progress');
+            $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
+            $table->float('score');
             $table->timestamps();
-            $table->timestamp('started_at')->nullable();
         });
-    }   
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('course_progress');
+        Schema::dropIfExists('quiz_results');
     }
 };

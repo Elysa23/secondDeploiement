@@ -109,7 +109,7 @@ class QuizController extends Controller
     return view('quizzes.edit', compact('quiz'));
 }
 
-public function update(Request $request, Quiz $quiz)
+    public function update(Request $request, Quiz $quiz)
 {
     $request->validate([
         'content' => 'required'
@@ -122,7 +122,7 @@ public function update(Request $request, Quiz $quiz)
     return redirect()->route('quizzes.index')->with('success', 'Quiz modifié avec succès !');
 }
 
-public function destroy(Quiz $quiz)
+    public function destroy(Quiz $quiz)
 {
     // Optionnel : vérifier que l'utilisateur a le droit de supprimer
     $quiz->delete();

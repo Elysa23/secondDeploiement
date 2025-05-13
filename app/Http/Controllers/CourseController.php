@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CourseController extends Controller
 {
@@ -87,12 +89,30 @@ class CourseController extends Controller
 
 
     // Affiche le détail d’un cours
+    
     public function show($id)
     {
         $course = \App\Models\Course::findOrFail($id);
-        // Optionnel : vérifier l'accès via Policy
+    
+        // Enregistrer la progression si l'utilisateur est un apprenant
+        if (auth()->check() && auth()->user()->role === 'apprenant') {
+            \App\Models\CourseProgress::updateOrCreate(
+                [
+                    'user_id' => auth()->id(),
+                    'course_id' => $course->id,
+                ],
+                [
+                    'started_at' => now(),
+                    'status' => 'in_progress',
+                ]
+            );
+        
+        }
+    
         return view('courses.show', compact('course'));
     }
+
+
     // Affiche le formulaire d’édition
     public function edit(Course $course)
     {
@@ -107,7 +127,6 @@ class CourseController extends Controller
     $request->validate([
         'title' => 'required',
         'description' => 'required',
-        // ... autres règles selon tes besoins
     ]);
 
     // 2. Récupérer le cours à modifier

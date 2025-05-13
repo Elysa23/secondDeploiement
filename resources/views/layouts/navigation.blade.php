@@ -11,14 +11,18 @@
         </div>
         <!-- Liens de navigation avec espace entre eux -->
         <div class="hidden sm:flex sm:items-center ms-10 space-x-6">
+        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'formateur')
             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-nav-link>
+            @elseif(auth()->user()->role === 'apprenant')
+                <x-nav-link :href="route('student.quiz.stats')" :active="request()->routeIs('student.quiz.stats')">
+                    {{ __('Dashboard') }}
+                </x-nav-link>
+            @endif
+
             @auth
                 @if(Auth::user()->role === 'admin')
-                    <x-nav-link :href="url('/admin-dashboard')" :active="request()->is('admin-dashboard')">
-                        {{ __('Admin') }}
-                    </x-nav-link>
                     <x-nav-link :href="url('/utilisateurs')" :active="request()->is('utilisateurs')">
                         {{ __('Utilisateurs') }}
                     </x-nav-link>

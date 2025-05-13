@@ -31,4 +31,10 @@ class Course extends Model
     {
         return $this->hasMany(CoursePage::class)->orderBy('order');
     }
+
+    public function user() 
+    {
+         return $this->belongsTo(User::class, 'user_id'); 
+    }
+
 }
