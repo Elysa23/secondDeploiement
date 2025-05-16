@@ -12,7 +12,7 @@ class QuizAnswer extends Model
         'user_id',
         'answers',
         'time_spent',
-        'score', // Ajout du champ score
+        'score',
     ];
 
     // Casts automatiques pour les attributs

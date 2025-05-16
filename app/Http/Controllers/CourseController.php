@@ -28,7 +28,8 @@ class CourseController extends Controller
     
         // Filtrer selon le rôle
         if (Auth::user()->role === 'formateur') {
-            $query->where('teacher_id', Auth::id());
+        
+            $query->where('user_id', Auth::id());
         }
     
         // Pour l'admin, pas de filtre supplémentaire
@@ -36,6 +37,7 @@ class CourseController extends Controller
 
         return view('courses.index', compact('courses', 'status', 'search'));
     }
+
     // Affiche le formulaire de création d’un cours
     public function create()
     {
@@ -78,7 +80,9 @@ class CourseController extends Controller
         }
     
         // 6. Associer le cours au formateur connecté
-        $data['teacher_id'] = Auth::id();
+       
+        $data['user_id'] = Auth::id();
+
     
         // 7. Créer le cours en base de données
         Course::create($data);
@@ -152,7 +156,6 @@ class CourseController extends Controller
     // 5. Mettre à jour le cours
     $course->update($data);
 
-    
 
     // 6. Redirection avec message de succès
     return redirect()->route('courses.index')->with('success', 'Cours modifié avec succès !');

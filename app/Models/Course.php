@@ -11,14 +11,14 @@ class Course extends Model
 
     // Les champs qu'on peut remplir massivement
     protected $fillable = [
-        'title', 'description', 'duration', 'status', 'thumbnail', 'content', 'attachment', 'video', 'teacher_id'
+        'title', 'description', 'duration', 'status', 'thumbnail', 'content', 'attachment', 'video', 'user_id'
 
     ];
 
     // Relation avec le formateur
     public function teacher()
     {
-        return $this->belongsTo(User::class, 'teacher_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     // Accesseur pour vérifier si le cours est publié

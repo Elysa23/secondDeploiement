@@ -38,6 +38,11 @@ class AdminDashboardController extends Controller
     $deploymentRate = $deploymentService->deploymentRate();
     $progressByTrainer = $deploymentService->averageProgressionByTrainer();
     $globalAvg = $quizStatsService->globalAverage();
+    $globalSuccess = $quizStatsService->globalSuccessRate();
+    $avgByTrainer = $quizStatsService->averageByTrainer();
+    $successByQuiz = $quizStatsService->successRateByQuiz();
+    $avgByQuiz = $quizStatsService->averageByQuiz();
+
 
     $draft = \App\Models\Course::where('status', 'draft')->count();
     $archived = \App\Models\Course::where('status', 'archived')->count();
@@ -60,11 +65,16 @@ class AdminDashboardController extends Controller
         'archived'=>$archived,
         'byTrainer'=>$byTrainer,
         'globalAvg' => $globalAvg,
+        'globalSuccess' => $globalSuccess,
+        'avgByTrainer' => $avgByTrainer,
+        'successByQuiz' => $successByQuiz,
+        'avgByQuiz' => $avgByQuiz,
     ]);
 }
 
             public function quizStats(QuizStatsService $statsService)
 {
+    
     $globalAvg = $statsService->globalAverage();
     $avgByTrainer = $statsService->averageByTrainer();
     $avgByQuiz = $statsService->averageByQuiz();
@@ -72,8 +82,10 @@ class AdminDashboardController extends Controller
     $globalSuccess = $statsService->globalSuccessRate();
     $successByQuiz = $statsService->successRateByQuiz();
 
+    
     return view('admin.quiz-stats', compact(
         'globalAvg', 'avgByTrainer', 'avgByQuiz', 'avgByStudent', 'globalSuccess', 'successByQuiz'
     ));
+    
 }
 }

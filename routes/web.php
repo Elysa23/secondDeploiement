@@ -26,7 +26,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-//Création de la route Get pour afficher le formulaire d'ajout d'utilisateur 28/04/25
 
 use App\Models\User;
 use Illuminate\Http\Request;

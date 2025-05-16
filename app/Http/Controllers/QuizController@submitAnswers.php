@@ -3,21 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Quiz;
 
-class QuizController@submitAnswers extends Controller
+class QuizController extends Controller
 {
     public function submitAnswers(Request $request, Quiz $quiz)
 {
+
+    dd('test';)
+    // 1. Validation de la requête
     $request->validate([
         'answers' => 'required|array',
     ]);
 
-    // Récupère les bonnes réponses (selon la logique de parsing)
-    $questions = parseQuizMarkdown($quiz->content); // ou autre méthode
+    // 2. Parsing des questions du quiz
+    $questions = parseQuizMarkdown($quiz->content); // ou ta méthode de parsing
     $userAnswers = $request->input('answers');
     $score = 0;
     $total = 0;
 
+    // 3. Log des données reçues
+    \Log::info('Soumission quiz', [
+        'user_id' => auth()->id(),
+        'quiz_id' => $quiz->id,
+        'userAnswers' => $userAnswers,
+        'questions' => $questions,
+    ]);
+
+    // 4. Calcul du score
     foreach ($questions as $index => $q) {
         if (isset($q['correct']) && isset($userAnswers[$index])) {
             $total++;
@@ -28,8 +41,27 @@ class QuizController@submitAnswers extends Controller
     }
 
     $finalScore = $total > 0 ? round(($score / $total) * 100, 2) : 0;
+    $finalScore = floatval($finalScore);
 
-    // Enregistre la réponse et la note
+    // 5. Log du score calculé
+    \Log::info('Score calculé', [
+        'finalScore' => $finalScore,
+        'total' => $total,
+        'score' => $score,
+    ]);
+
+    // 6. Debug complet avant enregistrement
+    dd([
+        'user_id' => auth()->id(),
+        'quiz_id' => $quiz->id,
+        'userAnswers' => $userAnswers,
+        'questions' => $questions,
+        'finalScore' => $finalScore,
+        'total' => $total,
+        'score' => $score,
+    ]);
+
+    // 7. Enregistrement dans la base (cette ligne ne sera pas exécutée tant que le dd() est présent)
     \App\Models\QuizAnswer::updateOrCreate(
         [
             'user_id' => auth()->id(),
@@ -41,8 +73,7 @@ class QuizController@submitAnswers extends Controller
         ]
     );
 
-    // Redirection ou affichage du résultat
+    // 8. Redirection
     return redirect()->route('student.quiz.stats')->with('success', 'Quiz soumis !');
-
 }
 }

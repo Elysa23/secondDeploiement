@@ -37,13 +37,13 @@ class QuizStatsService
     // Note moyenne par quizz
     public function averageByQuiz(): array
     {
-        return Quiz::with('results')
+        return Quiz::with('answers')
             ->get()
             ->map(function($quiz) {
                 return [
                     'quiz_id' => $quiz->id,
                     'quiz_title' => $quiz->title,
-                    'average' => $quiz->results->avg('score') ? round($quiz->results->avg('score'), 2) : null,
+                    'average' => $quiz->answers->avg('score') ? round($quiz->answers->avg('score'), 2) : null,
                 ];
             })->toArray();
     }
@@ -70,7 +70,7 @@ class QuizStatsService
         if ($total === 0) return 0;
 
         $success = QuizAnswer::whereHas('quiz', function($q) {
-            $q->whereColumn('quiz_results.score', '>=', 'quizzes.passing_score');
+            $q->whereColumn('quiz_answers.score', '>=', 'quizzes.passing_score');
         })->count();
 
         return round(($success / $total) * 100, 2);
@@ -79,14 +79,14 @@ class QuizStatsService
     // Taux de réussite par quizz
     public function successRateByQuiz(): array
     {
-        return Quiz::with('results')->get()->map(function($quiz) {
-            $total = $quiz->results->count();
+        return Quiz::with('answers')->get()->map(function($quiz) {
+            $total = $quiz->answers->count();
             if ($total === 0) return [
                 'quiz_id' => $quiz->id,
                 'quiz_title' => $quiz->title,
                 'success_rate' => null,
             ];
-            $success = $quiz->results->where('score', '>=', $quiz->passing_score)->count();
+            $success = $quiz->answers->where('score', '>=', $quiz->passing_score)->count();
             return [
                 'quiz_id' => $quiz->id,
                 'quiz_title' => $quiz->title,

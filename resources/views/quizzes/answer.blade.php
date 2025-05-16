@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-bold mb-4 dark:text-white">
             Quiz : {{ $quiz->course->title ?? 'Cours inconnu' }}
         </h1>
-        <form id="quiz-form" method="POST" action="{{ route('quizzes.submit', $quiz) }}">
+        <form id="quiz-form" method="POST" action="{{ route('quizzes.submit', $quiz->id) }}">
             @csrf
             @foreach($questions as $index => $q)
                 <div class="mb-6">
