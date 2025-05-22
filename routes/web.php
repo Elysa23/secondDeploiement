@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+    Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.updatePhoto'); // POST pour l'upload de fichier
 });
 
 require __DIR__.'/auth.php';
@@ -41,7 +43,7 @@ Route::post('/utilisateurs', function (Request $request) {
     $request->validate([
         'name' => 'required',
         'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:6',
+        'password' => 'required|min:8',
         'role' => 'required|in:apprenant,formateur,admin',
     ]);
 
