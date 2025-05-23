@@ -75,6 +75,7 @@ class QuizController extends Controller
     $course = Course::findOrFail($request->course_id);
 
     try {
+        dd(env('MISTRAL_API_KEY'));
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('MISTRAL_API_KEY'),
             'Referer' => 'https://seconddeploiement-production.up.railway.app',
