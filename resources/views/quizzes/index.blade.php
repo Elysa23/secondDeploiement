@@ -99,6 +99,9 @@
 </div>
 
 <script>
+
+ const QUIZ_GENERATE_URL = "{{ route('quizzes.generate') }}"; // TEST A RETIRER SI KO
+
 function openQuizModal() {
     document.getElementById('quiz-modal').style.display = 'flex';
     document.getElementById('quiz-result').classList.add('hidden');
@@ -118,7 +121,10 @@ function generateQuiz() {
     document.getElementById('quiz-loading').classList.remove('hidden');
     document.getElementById('quiz-result').classList.add('hidden');
     
-    fetch("{{ route('quizzes.generate') }}", {
+    //fetch("{{ route('quizzes.generate') }}" A REMETTRE APRES TEST SI KO
+          
+        fetch(QUIZ_GENERATE_URL, {
+
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
