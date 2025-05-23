@@ -110,7 +110,12 @@ class QuizController extends Controller
         ]);
         
     } catch (\Exception $e) {
-        \Log::error('Erreur lors de la génération du quiz', ['error' => $e->getMessage()]);
+      //  \Log::error('Erreur lors de la génération du quiz', ['error' => $e->getMessage()]); A REMETTRE SI KO
+
+        \Log::error('Erreur lors de la génération du quiz', [
+        'message' => $e->getMessage(),
+        'trace' => $e->getTraceAsString(),
+    ]);
         return response()->json(['error' => 'Erreur lors de la génération du quiz'], 500);
     }
 }
