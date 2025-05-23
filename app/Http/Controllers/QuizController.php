@@ -77,7 +77,7 @@ class QuizController extends Controller
     try {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('MISTRAL_API_KEY'),
-            'HTTP-Referer' => 'http://localhost',
+            'HTTP-Referer' => 'https://seconddeploiement-production.up.railway.app',
             'X-Title' => 'LaravelQuizGenerator',
         ])->post('https://openrouter.ai/api/v1/chat/completions', [
             'model' => 'mistralai/mistral-7b-instruct',
