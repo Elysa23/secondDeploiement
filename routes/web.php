@@ -162,3 +162,8 @@ Route::get('/student/quiz-stats', [StudentDashboardController::class, 'quizStats
 Route::get('/student/dashboard', [StudentDashboardController::class, 'dashboard'])
     ->middleware(['auth', 'role:apprenant'])
     ->name('student.dashboard');
+
+// Route pour tester l'API
+Route::get('/test-cle', function () {
+    dd(env('MISTRAL_API_KEY'));
+});
