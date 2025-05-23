@@ -68,6 +68,7 @@ class QuizController extends Controller
     // Génère un quiz via l’API IA (exemple avec Mistral)
     public function generate(Request $request)
 {
+    dd(env('MISTRAL_API_KEY'));
     $request->validate([
         'course_id' => 'required|exists:courses,id',
     ]);
@@ -75,7 +76,7 @@ class QuizController extends Controller
     $course = Course::findOrFail($request->course_id);
 
     try {
-        dd(env('MISTRAL_API_KEY'));
+        
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('MISTRAL_API_KEY'),
             'Referer' => 'https://seconddeploiement-production.up.railway.app',
